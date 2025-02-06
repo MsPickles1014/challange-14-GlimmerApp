@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard"; // Protected page
 import Events from "./pages/Events"; // Import Events page
 import Favorites from "./pages/Favorites";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/events" element={<PrivateRoute><Events /></PrivateRoute>} />
           <Route path="/events" element={<Events />} />
           <Route path="/favorites" element={<Favorites />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </Router>
     </AuthProvider>

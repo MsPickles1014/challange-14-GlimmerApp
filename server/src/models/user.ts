@@ -1,5 +1,5 @@
-import { DataTypes, Model, Optional, Sequelize } from "sequelize";
-import bcrypt from "bcryptjs";
+import { DataTypes, type Sequelize, Model, type Optional } from 'sequelize';
+import bcrypt from 'bcrypt';
 
 interface UserAttributes {
   id: number;
@@ -8,9 +8,12 @@ interface UserAttributes {
   password: string;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
+interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
 
-export class User extends Model<UserAttributes, UserCreationAttributes> {
+export class User
+  extends Model<UserAttributes, UserCreationAttributes>
+  implements UserAttributes
+{
   public id!: number;
   public username!: string;
   public email!: string;
@@ -19,12 +22,10 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  async setPassword(password: string) {
-    this.password = await bcrypt.hash(password, 10);
-  }
-
-  async checkPassword(password: string): Promise<boolean> {
-    return bcrypt.compare(password, this.password);
+  // Hash the password before saving the user
+  public async setPassword(password: string) {
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(password, saltRounds);
   }
 }
 
@@ -43,10 +44,6 @@ export function UserFactory(sequelize: Sequelize): typeof User {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
-        validate: {
-          isEmail: true,
-        },
       },
       password: {
         type: DataTypes.STRING,
@@ -54,16 +51,14 @@ export function UserFactory(sequelize: Sequelize): typeof User {
       },
     },
     {
-      tableName: "users",
+      tableName: 'users',
       sequelize,
       hooks: {
         beforeCreate: async (user: User) => {
           await user.setPassword(user.password);
         },
         beforeUpdate: async (user: User) => {
-          if (user.changed("password")) {
-            await user.setPassword(user.password);
-          }
+          await user.setPassword(user.password);
         },
       },
     }

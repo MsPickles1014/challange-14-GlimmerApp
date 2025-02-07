@@ -1,46 +1,19 @@
-import express from "express";
-import { authenticateToken } from "../../middleware/auth";
-import { User, FavoriteEvent } from "../../models/index";
+import express from 'express';
+import type { Request, Response } from 'express';
+import { User } from '../../models/index';
 
 const router = express.Router();
 
-// Get user profile
-router.get("/profile", authenticateToken, async (req, res) => {
+
+// POST /users - Create a new user
+router.post('/', async (req: Request, res: Response) => {
+  const { username, email, password } = req.body;
   try {
-    const user = await User.findOne({
-      where: { email: req.user.email },
-      attributes: ["id", "username", "email"],
-      include: [{ model: FavoriteEvent, attributes: ["id"] }]
-    });
-
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    res.json({
-      username: user.username,
-      email: user.email,
-      favoriteCount: user.FavoriteEvents.length
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    const newUser = await User.create({ username, email, password });
+    res.status(201).json(newUser);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
   }
 });
 
-// Update password
-router.put("/profile/password", authenticateToken, async (req, res) => {
-  const { newPassword } = req.body;
-
-  try {
-    const user = await User.findOne({ where: { email: req.user.email } });
-
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    await user.setPassword(newPassword);
-    await user.save();
-
-    res.json({ message: "Password updated successfully!" });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
-export default router;
+export { router as userRouter };

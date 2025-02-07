@@ -1,5 +1,5 @@
 import { seedUsers } from './user-seeds.js';
-import { seedFavourites } from '';
+import { seedEvents } from '';
 import sequelize from '../config/connection.js';
 
 const seedAll = async (): Promise<void> => {
@@ -10,8 +10,8 @@ const seedAll = async (): Promise<void> => {
     await seedUsers();
     console.log('\n----- USERS SEEDED -----\n');
 
-    await seedFavourites();
-    console.log('\n----- Favourites SEEDED -----\n');
+    await seedEvents();
+    console.log('\n----- Events SEEDED -----\n');
 
     process.exit(0);
   } catch (error) {

@@ -10,7 +10,7 @@ import sequelize from "../config/connection";
 
 
 
-class Favorite extends Model {
+class Events extends Model {
   public id!: number;
   public userId!: number;
   public eventText!: string;
@@ -18,7 +18,7 @@ class Favorite extends Model {
   public eventLink?: string;
 }
 
-Favorite.init(
+Events.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -44,9 +44,9 @@ Favorite.init(
   },
   {
     sequelize,
-    modelName: "Favorite",
+    modelName: "events",
   }
 );
 
 
-export default Favorite;
+export default Events;

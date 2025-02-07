@@ -12,7 +12,6 @@ import sequelize from "../config/connection";
 
 class Events extends Model {
   public id!: number;
-  public userId!: number;
   public eventText!: string;
   public eventDate!: string;
   public eventLink?: string;
@@ -25,10 +24,6 @@ Events.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     eventText: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -37,10 +32,10 @@ Events.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    eventLink: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
+    // eventLink: {
+    //   type: DataTypes.STRING,
+    //   allowNull: true,
+    // },
   },
   {
     sequelize,

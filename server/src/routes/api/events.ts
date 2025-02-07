@@ -17,4 +17,22 @@
 //   }
 // });
 
+
 // export default router;
+
+
+//added BY OMAR Note 
+// * you might want to use something like this
+
+// e.g
+// GET /users - Get all users
+// router.get('/', async (_req: Request, res: Response) => {
+//     try {
+//       const users = await User.findAll({
+//         attributes: { exclude: ['password'] }
+//       });
+//       res.json(users);
+//     } catch (error: any) {
+//       res.status(500).json({ message: error.message });
+//     }
+//   });

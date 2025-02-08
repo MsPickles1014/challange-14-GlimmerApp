@@ -1,7 +1,7 @@
 const forceDatabaseRefresh = false;
 
 import express from 'express';
-import { sequelize } from './config/connection.js';
+import sequelize from './config/connection.js';
 import routes from './routes/index.js';
 
 const app = express();

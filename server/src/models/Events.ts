@@ -1,7 +1,4 @@
-import { DataTypes, type Sequelize, Model } from "sequelize";
-import { Optional } from 'sequelize'; // Add this import****Noela Changes
-
-import { User } from "./user";  // Import the User model*****Noela Changes
+import { DataTypes, type Sequelize, Model, type Optional } from "sequelize";
 
 // ***added Interface ***Noela Changes
 interface EventAttributes {
@@ -20,11 +17,7 @@ export class Event extends Model<EventAttributes, EventCreationAttributes> imple
   public eventText!: string;
   public eventDate!: Date;
   public eventLink?: string;
-
-  // Define the association here****Noela Changes
-  public static associate() {
-    Event.belongsTo(User, { foreignKey: "userId", onDelete: "CASCADE" });
-  }
+ 
 }
 
 // ✅ Corrected function name & return type
@@ -55,7 +48,6 @@ export function EventFactory(sequelize: Sequelize): typeof Event {
     },
     {
       tableName: "events",
-      modelName: "Event", //Noela changes
       timestamps: true,
       sequelize,
     }

@@ -1,6 +1,6 @@
 import { seedUsers } from './user-seeds.js';
-import { seedEvents } from './events-seeds.js';
-import { sequelize } from '../config/connection.js';
+import { seedEvents } from './events-seeds'; //Update the import path for seedEvents ****Noela Changes
+import sequelize from '../config/connection.js';
 
 const seedAll = async (): Promise<void> => {
   try {
@@ -20,4 +20,4 @@ const seedAll = async (): Promise<void> => {
   }
 };
 
-export { seedAll };
+seedAll();

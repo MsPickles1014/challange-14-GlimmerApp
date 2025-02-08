@@ -1,18 +1,30 @@
 import { DataTypes, type Sequelize, Model } from "sequelize";
-import { sequelize } from "../config/connection";
+import { Optional } from 'sequelize'; // Add this import****Noela Changes
 
-// The Events model stores:
-// userId: Links the event to a user
-// eventText: The event description
-// eventDate: The date of the event
-// eventLink: A Wikipedia link (if available)
+import { User } from "./user";  // Import the User model*****Noela Changes
 
-class Event extends Model {
+// ***added Interface ***Noela Changes
+interface EventAttributes {
+  id: number;
+  userId: number; // Links event to a user
+  eventText: string;
+  eventDate: Date; //***Noela Changes */
+  eventLink?: string;
+}
+
+interface EventCreationAttributes extends Optional<EventAttributes, "id"> {} //*** Noela Changes
+
+export class Event extends Model<EventAttributes, EventCreationAttributes> implements EventAttributes {
   public id!: number;
   public userId!: number;
   public eventText!: string;
-  public eventDate!: string;
+  public eventDate!: Date;
   public eventLink?: string;
+
+  // Define the association here****Noela Changes
+  public static associate() {
+    Event.belongsTo(User, { foreignKey: "userId", onDelete: "CASCADE" });
+  }
 }
 
 // ✅ Corrected function name & return type
@@ -33,7 +45,7 @@ export function EventFactory(sequelize: Sequelize): typeof Event {
         allowNull: false,
       },
       eventDate: {
-        type: DataTypes.STRING,
+         type: DataTypes.DATEONLY, //Noela changes
         allowNull: false,
       },
       eventLink: {
@@ -42,8 +54,10 @@ export function EventFactory(sequelize: Sequelize): typeof Event {
       },
     },
     {
+      tableName: "events",
+      modelName: "Event", //Noela changes
+      timestamps: true,
       sequelize,
-      tableName: "events", // ✅ Use `tableName` instead of `modelName`
     }
   );
 

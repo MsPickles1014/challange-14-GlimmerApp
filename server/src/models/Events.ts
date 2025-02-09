@@ -39,6 +39,7 @@ export function EventFactory(sequelize: Sequelize): typeof Event {
       },
       eventDate: {
          type: DataTypes.DATEONLY, //Noela changes
+        field: 'event_date',
         allowNull: false,
       },
       eventLink: {

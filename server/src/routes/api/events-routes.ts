@@ -29,8 +29,8 @@ router.get("/:month/:day", async (req: Request, res: Response) => {
     // Query the database using Sequelize's Op
     const events = await Event.findAll({
       where: Sequelize.and(
-        Sequelize.where(Sequelize.fn("EXTRACT", Sequelize.literal("MONTH FROM \"eventDate\"")), Number(month)),
-        Sequelize.where(Sequelize.fn("EXTRACT", Sequelize.literal("DAY FROM \"eventDate\"")), Number(day))
+        Sequelize.where(Sequelize.fn("EXTRACT", Sequelize.literal("MONTH FROM \"eventdate\"")), Number(month)),
+        Sequelize.where(Sequelize.fn("EXTRACT", Sequelize.literal("DAY FROM \"eventdate\"")), Number(day))
       )
     });
 

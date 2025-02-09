@@ -17,7 +17,7 @@ export class Event extends Model<EventAttributes, EventCreationAttributes> imple
   public eventText!: string;
   public eventDate!: Date;
   public eventLink?: string;
- 
+
 }
 
 // ✅ Corrected function name & return type
@@ -39,7 +39,7 @@ export function EventFactory(sequelize: Sequelize): typeof Event {
       },
       eventDate: {
          type: DataTypes.DATEONLY, //Noela changes
-        field: 'event_date',
+         field: 'eventdate', // Maps to the database column `eventdate`
         allowNull: false,
       },
       eventLink: {

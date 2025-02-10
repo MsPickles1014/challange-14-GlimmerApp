@@ -1,66 +1,71 @@
-import React, { useState } from 'react';
+import { useState, type FormEvent, type ChangeEvent } from 'react';
+
+import Auth from '../utils/auth'; // Using Auth utility for login management
+import { login } from '../api/authAPI'; // Using login function from auth API
+import type { UserLogin } from '../interfaces/UserLogin';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [loginData, setLoginData] = useState<UserLogin>({
+    username: '',
+    password: '',
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setLoginData({
+      ...loginData,
+      [name]: value,
+    });
+  };
 
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3001/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }), // Send username and password in the body
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log('Login successful:', data);
-        // Save token, redirect, or perform other actions
-      } else {
-        console.error('Login failed:', data.message || 'Unknown error');
-        setErrorMessage(data.message || 'Login failed');
-      }
+      const data = await login(loginData);
+      Auth.login(data.token); // Authenticate using Auth utility
     } catch (err) {
-      console.error('Error during login:', err);
-      setErrorMessage('An error occurred. Please try again.');
+      console.error('Failed to login', err);
     }
   };
 
   return (
-    <div className="login-container">
-      <h1>Sign In</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter your username"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-            required
-          />
-        </div>
-        {errorMessage && <p className="error">{errorMessage}</p>}
-        <button type="submit">Sign In</button>
-      </form>
+    <div className="bg-gray-100 min-h-screen flex items-center justify-center">
+      <div className="bg-white p-8 rounded-lg shadow-md w-96">
+        <h1 className="text-xl font-semibold mb-4">Login</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={loginData.username || ''}
+              onChange={handleChange}
+              className="w-full p-2 border rounded-lg"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={loginData.password || ''}
+              onChange={handleChange}
+              className="w-full p-2 border rounded-lg"
+              required
+            />
+          </div>
+          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 w-full">
+            Sign In
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

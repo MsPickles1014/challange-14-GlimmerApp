@@ -14,16 +14,16 @@ const LoginSignup = () => {
             </div>
             <div className="inputs">
                 <div className="input">
-                    <img src="" alt="" />
-                    <input type="text" />
+                    <img src={user_icon} alt="" />
+                    <input type="Name" />
                 </div>
                 <div className="input">
-                    <img src="" alt="" />
-                    <input type="text" />
+                    <img src={email_icon} alt="" />
+                    <input type="Email" />
                 </div>
                 <div className="input">
-                    <img src="" alt="" />
-                    <input type="text" />
+                    <img src={password_icon} alt="" />
+                    <input type="Password" />
                 </div>
             </div>
 

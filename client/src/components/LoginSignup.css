@@ -27,3 +27,11 @@
     background:#3c009d;
     border-radius:9x;
 }
+
+.inputs{
+    margin-top: 55px;
+    display: flex;
+    flex-direction: column;
+    gap:25px;
+}
+

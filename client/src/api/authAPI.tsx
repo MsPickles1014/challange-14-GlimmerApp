@@ -1,9 +1,9 @@
 import type { UserLogin } from '../interfaces/UserLogin';
 
 // Login user function
-const loginUser = async (userInfo: UserLogin) => {
+const login = async (userInfo: UserLogin) => {
   try {
-    const response = await fetch('http://localhost:3001/auth/login', {
+    const response = await fetch('/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ const loginUser = async (userInfo: UserLogin) => {
 // Retrieve users function
 const retrieveUsers = async () => {
   try {
-    const response = await fetch('http://localhost:3001/api/users', {
+    const response = await fetch('/auth/register', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ const retrieveUsers = async () => {
   }
 };
 
-export { loginUser, retrieveUsers };
+export { login, retrieveUsers };
 
 
 

@@ -15,22 +15,25 @@ const LoginSignup = () => {
             <div className="inputs">
                 <div className="input">
                     <img src={user_icon} alt="" />
-                    <input type="Name" />
+                    <input type="name" />
                 </div>
                 <div className="input">
                     <img src={email_icon} alt="" />
-                    <input type="Email" />
+                    <input type="email" />
                 </div>
                 <div className="input">
                     <img src={password_icon} alt="" />
-                    <input type="Password" />
+                    <input type="password" />
                 </div>
             </div>
-
-            
+            <div className="forgot-password">Lost Password</div>
+            <div className="submit-container">
+                <div className="submit">Sign Up</div>
+                <div className="submit">Log In</div>
+            </div>
         </div>
     )
 }
 
-export default LoginSignup
+export default LoginSignup;
 

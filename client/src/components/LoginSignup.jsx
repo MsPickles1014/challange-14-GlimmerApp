@@ -17,6 +17,14 @@ const LoginSignup = () => {
                     <img src="" alt="" />
                     <input type="text" />
                 </div>
+                <div className="input">
+                    <img src="" alt="" />
+                    <input type="text" />
+                </div>
+                <div className="input">
+                    <img src="" alt="" />
+                    <input type="text" />
+                </div>
             </div>
 
             

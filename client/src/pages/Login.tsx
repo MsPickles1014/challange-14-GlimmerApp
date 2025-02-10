@@ -1,64 +1,65 @@
-import { useState, type FormEvent, type ChangeEvent } from 'react';
-
-import Auth from '../utils/auth';
-import { login } from '../api/authAPI';
-import type { UserLogin } from '../interfaces/UserLogin';
+import React, { useState } from 'react';
 
 const Login = () => {
-  const [loginData, setLoginData] = useState<UserLogin>({
-    username: '',
-    password: '',
-  });
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setLoginData({
-      ...loginData,
-      [name]: value,
-    });
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
     try {
-      const data = await login(loginData);
-      Auth.login(data.token);
+      const response = await fetch('http://localhost:3001/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }), // Send username and password in the body
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Login successful:', data);
+        // Save token, redirect, or perform other actions
+      } else {
+        console.error('Login failed:', data.message || 'Unknown error');
+        setErrorMessage(data.message || 'Login failed');
+      }
     } catch (err) {
-      console.error('Failed to login', err);
+      console.error('Error during login:', err);
+      setErrorMessage('An error occurred. Please try again.');
     }
   };
 
   return (
-    <div className='form-container'>
-      <form className='form login-form' onSubmit={handleSubmit}>
-        <h1>Login</h1>
-        <div className='form-group'>
-          <label>Username</label>
+    <div className="login-container">
+      <h1>Sign In</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="username">Username</label>
           <input
-            className='form-input'
-            type='text'
-            name='username'
-            value={loginData.username || ''}
-            onChange={handleChange}
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter your username"
+            required
           />
         </div>
-        <div className='form-group'>
-          <label>Password</label>
+        <div>
+          <label htmlFor="password">Password</label>
           <input
-            className='form-input'
-            type='password'
-            name='password'
-            value={loginData.password || ''}
-            onChange={handleChange}
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            required
           />
         </div>
-        <div className='form-group'>
-          <button className='btn btn-primary' type='submit'>
-            Login
-          </button>
-        </div>
+        {errorMessage && <p className="error">{errorMessage}</p>}
+        <button type="submit">Sign In</button>
       </form>
     </div>
   );

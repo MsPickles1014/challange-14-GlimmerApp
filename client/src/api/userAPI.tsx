@@ -1,49 +1,24 @@
-// Function to login user
-export const loginUser = async (username: string, password: string) => {
+import Auth from '../utils/auth';
+
+const retrieveUsers = async () => {
   try {
-    const response = await fetch('http://localhost:3001/api/users/login', {
-      method: 'POST',
+    const response = await fetch('/api/users', {
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${Auth.getToken()}`,
       },
-      body: JSON.stringify({ username, password }),
     });
+    const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(`Login failed: ${response.statusText}`);
+      throw new Error('invalid user API response, check network tab!');
     }
 
-    const data = await response.json();
-    console.log('Login successful:', data);
-
-    // Save the token in localStorage (or cookies if you prefer)
-    localStorage.setItem('authToken', data.token);
-
     return data;
-  } catch (error) {
-    console.error('Error logging in:', error);
-    throw error; // This allows error handling in the Login component
+  } catch (err) {
+    console.log('Error from data retrieval:', err);
+    return [];
   }
 };
 
-// Function to retrieve users
-export const retrieveUsers = async () => {
-  try {
-    const response = await fetch('http://localhost:3001/api/users', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to retrieve users');
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error retrieving users:', error);
-    throw error;
-  }
-};
+export { retrieveUsers };

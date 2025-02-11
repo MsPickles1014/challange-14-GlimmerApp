@@ -1,67 +1,35 @@
-import { useState, type FormEvent, type ChangeEvent } from 'react';
+import React, { useState } from 'react';
 
-import Auth from '../utils/auth';
-import { login } from '../api/authAPI';
-import type { UserLogin } from '../interfaces/UserLogin';
+interface LoginFormData {
+  username: string;
+  password: string;
+}
 
 const Login = () => {
-  const [loginData, setLoginData] = useState<UserLogin>({
-    username: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState<LoginFormData>({ username: '', password: '' });
+  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  // Handle input change
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setLoginData({
-      ...loginData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  // Handle form submit
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const data = await login(loginData);
-      Auth.login(data.token);
-    } catch (err) {
-      console.error('Failed to login', err);
+    setLoading(true);
+    setError('');
+
+    // Dummy login logic (replace with API call)
+    if (formData.username === 'user' && formData.password === 'password') {
+      // Simulate successful login
+      console.log('Logged in successfully');
+      setLoading(false);
+    } else {
+      setError('Invalid credentials');
+      setLoading(false);
     }
   };
 
-  return (
-    <div className='form-container'>
-      <form className='form login-form' onSubmit={handleSubmit}>
-        <h1>Login</h1>
-        <div className='form-group'>
-          <label>Username</label>
-          <input
-            className='form-input'
-            type='text'
-            name='username'
-            value={loginData.username || ''}
-            onChange={handleChange}
-          />
-        </div>
-        <div className='form-group'>
-          <label>Password</label>
-          <input
-            className='form-input'
-            type='password'
-            name='password'
-            value={loginData.password || ''}
-            onChange={handleChange}
-          />
-        </div>
-        <div className='form-group'>
-          <button className='btn btn-primary' type='submit'>
-            Login
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-};
-
-export default Login;

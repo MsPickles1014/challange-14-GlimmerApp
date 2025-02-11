@@ -1,6 +1,5 @@
 import type { UserLogin } from '../interfaces/UserLogin';
 
-// Login user function
 const login = async (userInfo: UserLogin) => {
   try {
     const response = await fetch('/auth/login', {
@@ -14,36 +13,14 @@ const login = async (userInfo: UserLogin) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error('Login failed. Please check your credentials.');
+      throw new Error('User information not retrieved, check network tab!');
     }
 
     return data;
-  } catch (error) {
-    console.log('Error during login: ', error);
-    return Promise.reject('Failed to log in.');
+  } catch (err) {
+    console.log('Error from user login: ', err);
+    return Promise.reject('Could not fetch user info');
   }
 };
 
-// Retrieve users function
-const retrieveUsers = async () => {
-  try {
-    const response = await fetch('/auth/register', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to retrieve users');
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error retrieving users:', error);
-    throw error;
-  }
-};
-
-export { login, retrieveUsers };
+export { login };

@@ -1,42 +1,15 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import auth from '../utils/auth';
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
-  const [loginCheck, setLoginCheck] = useState(false);
-
-  const checkLogin = () => {
-    if (auth.loggedIn()) {
-      setLoginCheck(true);
-    }
-  };
-
-  useEffect(() => {
-    console.log(loginCheck);
-    checkLogin();
-  }, [loginCheck]);
-
   return (
-    <div className='display-flex justify-space-between align-center py-2 px-5 mint-green'>
-      <h1>Authentication Review</h1>
+    <nav className="bg-gray-800 text-white p-4 flex justify-between">
+      <Link to="/" className="text-lg font-bold">History App</Link>
       <div>
-        {!loginCheck ? (
-          <button className='btn' type='button'>
-            <Link to='/login'>Login</Link>
-          </button>
-        ) : (
-          <button
-            className='btn'
-            type='button'
-            onClick={() => {
-              auth.logout();
-            }}
-          >
-            Logout
-          </button>
-        )}
+        <Link to="/events" className="mr-4">Discover Events</Link>
+        <Link to="/favorites" className="mr-4">My Favorites ⭐</Link>
+        <Link to="/profile" className="mr-4">👤 Profile</Link>
       </div>
-    </div>
+    </nav>
   );
 };
 

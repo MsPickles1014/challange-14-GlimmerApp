@@ -12,33 +12,33 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    console.log(loginCheck);
     checkLogin();
   }, [loginCheck]);
 
   return (
-    <div className="bg-gray-800 text-white p-4 dispay-flex justify-between align-center py-2 px-5">
-         <h1>Authentication Review</h1>
+    <nav className="bg-[#d4b890] text-[#5a3e2b] py-3 px-6 shadow-lg border-b-4 border-[#8b5a2b] font-serif flex justify-between items-center">
+      {/* Title with Historical Aesthetic */}
+      <h1 className="text-2xl font-bold tracking-wider">📜 📜📜Let's Travel Back to A Glimmer in Time📜📜📜</h1>
 
+      {/* Navigation Buttons */}
       <div>
         {!loginCheck ? (
-          <button className='btn' type='button'>
-            <Link to='/login'>Login</Link>
-          </button>
+          <Link
+            to="/login"
+            className="px-4 py-2 bg-[#8b5a2b] text-white rounded-lg shadow-md hover:bg-[#6d4321] transition"
+          >
+            Enter Archives
+          </Link>
         ) : (
           <button
-            className='btn'
-            type='button'
-            onClick={() => {
-              auth.logout();
-            }}
+            onClick={() => auth.logout()}
+            className="px-4 py-2 bg-[#8b5a2b] text-white rounded-lg shadow-md hover:bg-[#6d4321] transition"
           >
-            Logout
+            Leave Archives
           </button>
         )}
       </div>
-      </div>
-    
+    </nav>
   );
 };
 

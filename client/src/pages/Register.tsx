@@ -14,7 +14,7 @@ const Register: React.FC = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await registerUser(username, email, password);
+      await registerUser({username, password});
       navigate("/login"); // Redirect to login after registration
     } catch (err) {
       setError("Registration failed. Please try again.");
